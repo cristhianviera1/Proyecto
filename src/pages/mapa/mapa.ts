@@ -33,7 +33,7 @@ export class MapaPage {
         console.log(data);
       },
         err => console.log("error is " + err), //En caso de tener una respuesta negativa imprimimos en consola el error
-        
+
         () => this.markers()
 
       );
@@ -46,35 +46,45 @@ export class MapaPage {
       id: 'mapbox.streets'
     }).addTo(this.map);
     this.map.locate({ setView: true, maxZoom: 13 }).on('locationfound', (e) => {
-      console.log('Se ha recuperado tu ubicación exitosamente');  
+      console.log('Se ha recuperado tu ubicación exitosamente');
     })
   }
   markers() {
+    function process(date){
+      var parts = date.split("-");
+      return new Date(parts[2], parts[1] - 1, parts[0]);
+   }
     console.log("Eventos Recuperados: " + this.propertyList.length);
-    //Recuperamos nuestro array "propertyList" y recorremos cada una de sus propiedades
+    
+    var f = new Date();
+    var hoy = (f.getFullYear()+"-"+ (f.getMonth() + 1) + "-" +f.getDate());
+
+   //Recuperamos nuestro array "propertyList" y recorremos cada una de sus propiedades
     for (let property of this.propertyList) {
-      let markerGroup = L.featureGroup();
-      let marker: any = L.marker([property.latitud, property.longitud]).on('click', () => {        
-        var contenido ='<table border=1>'+
-        '<tr><td><b>Evento:</b></td><td colspan=3>'+property.nombre+'</td></tr>'+
-        '<tr><td><b>Fecha:</b></td><td>'+property.fecha+'</td><td><b>Hora:</b></td><td>'+property.hora+'</td></tr>'+
-        '<tr><td><b>Información:</b></td><td colspan=3>'+property.descripcion+'</td></tr>'+
-        '<tr><td><b>Categoria:</b></td><td>'+property.categoria+'</td><td><b>Precio:</b></td><td>'+property.precio+'</td></tr>'+
-        '<tr><td><b>Puntos de Venta:</b></td><td colspan=3>'+property.puntosVenta+'</td></tr>'+
-        '<tr><td><b>Lugar:</b></td><td colspan=3>'+property.lugar+'</td></tr>'+
-        '<tr><td><b>Dirección:</b></td><td colspan=3>'+property.direccion+'</td></tr>'+
-        '<tr><td><b>Observaciones:</b></td><td colspan=3>'+property.observaciones+'</td></tr>'+
-        '<tr><td><b>Organizan:</b></td><td colspan=3>'+property.organizadores+'</td></tr>'+
-        '</table>'
-      Swal({
-        title: "<i>Evento</i>", 
-        html: contenido,  
-        confirmButtonText: "<u>Volver</u>", 
-        width: '800px',
-      });
-      })
-      markerGroup.addLayer(marker);
-      this.map.addLayer(markerGroup);
+      if (process(property.fecha) >= process(hoy)) {
+        let markerGroup = L.featureGroup();
+        let marker: any = L.marker([property.latitud, property.longitud]).on('click', () => {
+          var contenido = '<table border=1>' +
+            '<tr><td><b>Evento:</b></td><td colspan=3>' + property.nombre + '</td></tr>' +
+            '<tr><td><b>Fecha:</b></td><td>' + property.fecha + '</td><td><b>Hora:</b></td><td>' + property.hora + '</td></tr>' +
+            '<tr><td><b>Información:</b></td><td colspan=3>' + property.descripcion + '</td></tr>' +
+            '<tr><td><b>Categoria:</b></td><td>' + property.categoria + '</td><td><b>Precio:</b></td><td>' + property.precio + '</td></tr>' +
+            '<tr><td><b>Puntos de Venta:</b></td><td colspan=3>' + property.puntosVenta + '</td></tr>' +
+            '<tr><td><b>Lugar:</b></td><td colspan=3>' + property.lugar + '</td></tr>' +
+            '<tr><td><b>Dirección:</b></td><td colspan=3>' + property.direccion + '</td></tr>' +
+            '<tr><td><b>Observaciones:</b></td><td colspan=3>' + property.observaciones + '</td></tr>' +
+            '<tr><td><b>Organizan:</b></td><td colspan=3>' + property.organizadores + '</td></tr>' +
+            '</table>'
+          Swal({
+            title: "<i>Evento</i>",
+            html: contenido,
+            confirmButtonText: "<u>Volver</u>",
+            width: '800px',
+          });
+        })
+        markerGroup.addLayer(marker);
+        this.map.addLayer(markerGroup);
+      }
     }
   }
 }
