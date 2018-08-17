@@ -6,9 +6,6 @@ import { MyApp } from './app.component';
 
 import {Geolocation} from '@ionic-native/geolocation';
 import { MapaPage } from '../pages/mapa/mapa';
-import { BuscarPage } from '../pages/buscar/buscar';
-import { AcercaPage } from '../pages/acerca/acerca';
-import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,9 +14,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     MapaPage,
-    BuscarPage,
-    AcercaPage,
-    TabsPage
   ],
   imports: [
     BrowserModule,
@@ -30,9 +24,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     MapaPage,
-    BuscarPage,
-    AcercaPage,
-    TabsPage
   ],
   providers: [
     StatusBar,
